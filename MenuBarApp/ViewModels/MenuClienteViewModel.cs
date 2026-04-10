@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using MenuBarApp.Models;
+using MenuBarApp.Services;
 
 namespace MenuBarApp.ViewModels
 {
@@ -13,13 +14,32 @@ namespace MenuBarApp.ViewModels
     {
         public ObservableCollection<Producto> Productos { get; set; }
 
+        private ProductoService misProductos;
+
         public MenuClienteViewModel()
         {
-            // prueba manual de correcto funcionamiento
-            Productos = new ObservableCollection<Producto>();
-            Productos.Add(new Producto { Nombre = "Hamburguesa", Precio = 5.50m });
-            Productos.Add(new Producto { Nombre = "Cerveza", Precio = 2.00m });
+            misProductos = new ProductoService();
+
+            misProductos.InsertarProducto(new Producto
+            {
+                Nombre = "Pizza",
+                Precio = 7.50m,
+                Categoria = Enums.CategoriaProducto.Comida
+            });
+
+            //Productos = new ObservableCollection<Producto>(lista);
+
+            
+
+            //var lista = misProductos.ObtenerProductos();
+
+       
+     
         }
+
+
+  
+        
 
     }
 }

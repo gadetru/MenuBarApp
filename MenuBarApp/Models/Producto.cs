@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MenuBarApp.Models
 {
-    internal class Producto
+    public class Producto // no olvidar que si la dejas inernal, no tienes apenas acceso luego
     {
         public int IdProducto { get; set; }
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
         public decimal Precio { get; set; }
+        public Enums.CategoriaProducto Categoria { get; set; } = Enums.CategoriaProducto.Comida;
 
     }
 }
