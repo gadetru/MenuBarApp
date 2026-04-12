@@ -11,7 +11,8 @@ namespace MenuBarApp.Models
         public enum CategoriaProducto
         {
             Comida,
-            Bebida
+            Bebida,
+            postre
         }
     }
 }

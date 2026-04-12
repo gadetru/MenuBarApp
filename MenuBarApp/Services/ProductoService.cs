@@ -15,6 +15,7 @@ namespace MenuBarApp.Services
 
 
         //*********lista de productos****************
+
         public List<Producto> ObtenerProductos()
         {
             List<Producto> lista = new List<Producto>();
@@ -34,7 +35,8 @@ namespace MenuBarApp.Services
                     {
                         IdProducto = reader.GetInt32("id_producto"),
                         Nombre = reader.GetString("nombre"),
-                        Precio = reader.GetDecimal("precio")
+                        Precio = reader.GetDecimal("precio"),
+                        Categoria = Enum.Parse<Enums.CategoriaProducto>(reader.GetString("categoria"), ignoreCase: true) // así extraeremos el enum de mysql y lo pasamos a un enum numerico de c#
                     });
                 }
             }
@@ -42,23 +44,35 @@ namespace MenuBarApp.Services
             return lista;
         }
 
-        //****************** INSERTAR PRODUCTOS *********************
-        public void InsertarProducto(Producto producto)
+        public List<Producto> ObtenerPorCategoria(Enums.CategoriaProducto categoria)
         {
+            List<Producto> lista = new List<Producto>();
+
             using (var conn = db.GetConnection())
             {
                 conn.Open();
 
-                string query = "INSERT INTO Producto (nombre, precio, categoria) VALUES (@nombre, @precio, @categoria)";
-
+                string query = "SELECT * FROM Producto WHERE categoria = @categoria";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@categoria", categoria.ToString().ToLower());
 
-                cmd.Parameters.AddWithValue("@nombre", producto.Nombre);
-                cmd.Parameters.AddWithValue("@precio", producto.Precio);
-                cmd.Parameters.AddWithValue("@categoria", producto.Categoria.ToString().ToLower()); // para que entienda el enum
+                var reader = cmd.ExecuteReader();
 
-                cmd.ExecuteNonQuery();
+                while (reader.Read())
+                {
+                    lista.Add(new Producto
+                    {
+                        IdProducto = reader.GetInt32("id_producto"),
+                        Nombre = reader.GetString("nombre"),
+                        Precio = reader.GetDecimal("precio"),
+                        Categoria = categoria
+                    });
+                }
             }
+
+            return lista;
         }
     }
 }
+    
+

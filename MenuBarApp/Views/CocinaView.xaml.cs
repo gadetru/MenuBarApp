@@ -1,5 +1,8 @@
-﻿using MenuBarApp.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MenuBarApp
+namespace MenuBarApp.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Lógica de interacción para CocinaView.xaml
     /// </summary>
-    public partial class MenuClienteView : Window
+    public partial class CocinaView : UserControl
     {
-        public MenuClienteView()
+        public CocinaView()
         {
             InitializeComponent();
-            DataContext = new MenuClienteViewModel();
         }
     }
 }
