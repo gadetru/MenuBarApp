@@ -6,11 +6,96 @@
              xmlns:local="clr-namespace:MenuBarApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-        <TextBlock Text="PANTALLA COCINA"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- CABECERA -->
+        <TextBlock Grid.Row="0"
+                   Text="Cocina"
+                   FontSize="24"
+                   FontWeight="Bold"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="30"/>
-   
+                   Margin="0,10,0,10"/>
+
+        <!-- LISTA DE PEDIDOS -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Pedidos}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <!-- TARJETA DE CADA PEDIDO -->
+                        <Border BorderBrush="Gray"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Margin="10"
+                                Padding="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- NOMBRE DEL CLIENTE Y HORA -->
+                                <StackPanel Grid.Row="0" 
+                                            Orientation="Horizontal"
+                                            Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pedido.NombreCliente}"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Pedido.FechaHora, StringFormat='{}{0:HH:mm}'}"
+                                               FontSize="14"
+                                               Foreground="Gray"/>
+                                </StackPanel>
+
+                                <!-- PRODUCTOS CON CHECKBOXES -->
+                                <ItemsControl Grid.Row="1" 
+                                              ItemsSource="{Binding Detalles}"
+                                              Margin="0,0,0,8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Margin="0,2,0,2">
+                                                <CheckBox IsChecked="{Binding EstaListo}"
+                                                          Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Detalle.Producto.Nombre}"
+                                                           Width="150"/>
+                                                <TextBlock Text="{Binding Detalle.Cantidad}"
+                                                           Margin="8,0,0,0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- BOTONES -->
+                                <StackPanel Grid.Row="2" 
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right">
+                                    <Button Content="En proceso"
+                                            Command="{Binding DataContext.PedidoEnProcesoCommand, 
+                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Width="100"
+                                            Margin="0,0,8,0"/>
+                                    <Button Content="Completado"
+                                            Command="{Binding DataContext.PedidoCompletadoCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Width="100"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
     </Grid>
 </UserControl>

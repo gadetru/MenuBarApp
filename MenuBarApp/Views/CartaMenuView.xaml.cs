@@ -40,7 +40,7 @@ namespace MenuBarApp.Views
 
         private void Postre_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as MenuClienteViewModel).CargarPorCategoria(Enums.CategoriaProducto.postre);
+            (DataContext as MenuClienteViewModel).CargarPorCategoria(Enums.CategoriaProducto.Postre);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)

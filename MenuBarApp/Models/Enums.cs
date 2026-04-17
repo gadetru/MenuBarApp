@@ -12,7 +12,17 @@ namespace MenuBarApp.Models
         {
             Comida,
             Bebida,
-            postre
+            Postre
+   
+        }
+
+        public enum EstadoPedido
+        {
+            Pendiente,
+            Proceso,
+            Completado
         }
     }
+
+   
 }
