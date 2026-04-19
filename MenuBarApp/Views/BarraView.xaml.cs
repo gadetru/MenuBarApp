@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MenuBarApp.ViewModels;
 
 namespace MenuBarApp.Views
 {
@@ -23,6 +24,7 @@ namespace MenuBarApp.Views
         public BarraView()
         {
             InitializeComponent();
+            DataContext = new BarraViewModel();
         }
     }
 }

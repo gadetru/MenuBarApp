@@ -9,20 +9,44 @@ namespace MenuBarApp.Helpers
 {
     public class RelayCommand : ICommand
     {
-        private readonly Action<object?> _execute;
-        private readonly Func<object?, bool>? _canExecute;
+        // Guardamos el método que se ejecutará cuando pulsen el botón
+        private readonly Action<object> _execute;
 
-        public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
+        // Guardamos el método que decide si el botón está activo o no
+        // puede ser null si el botón siempre está activo
+        private readonly Func<object, bool> _canExecute;
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
-        public void Execute(object? parameter) => _execute(parameter);
+        // WPF llama a este método para saber si el botón debe estar activo
+        public bool CanExecute(object parameter)
+        {
+            if (_canExecute == null)
+            {
+                return true;
+            }
+            return _canExecute(parameter);
+        }
 
-        public event EventHandler? CanExecuteChanged;
-        public void RaiseCanExecuteChanged() =>
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        // WPF llama a este método cuando el usuario pulsa el botón
+        public void Execute(object parameter)
+        {
+            _execute(parameter);
+        }
+
+        // Este evento le dice a WPF "oye, vuelve a comprobar si el botón está activo"
+        public event EventHandler CanExecuteChanged;
+
+        public void RaiseCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+            {
+                CanExecuteChanged(this, EventArgs.Empty);
+            }
+        }
     }
 }

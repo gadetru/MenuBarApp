@@ -28,11 +28,23 @@
                     <DataTemplate>
 
                         <!-- TARJETA DE CADA PEDIDO -->
-                        <Border BorderBrush="Gray"
-                                BorderThickness="1"
+
+                        <Border BorderThickness="1"
                                 CornerRadius="5"
                                 Margin="10"
                                 Padding="10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="Gray"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Estado}" Value="Proceso">
+                                            <Setter Property="Background" Value="#FFE0B2"/>
+                                            <Setter Property="BorderBrush" Value="#FF9800"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -61,8 +73,23 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal"
                                                         Margin="0,2,0,2">
-                                                <CheckBox IsChecked="{Binding EstaListo}"
-                                                          Margin="0,0,8,0"/>
+                                                <CheckBox Margin="0,0,8,0">
+                                                    <CheckBox.IsChecked>
+                                                        <Binding Path="EstaListo"/>
+                                                    </CheckBox.IsChecked>
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding DataContext.Estado, 
+                                                                                         RelativeSource={RelativeSource AncestorType=Border}}" 
+                                                                                         Value="Proceso">
+                                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>
+                                                </CheckBox>
                                                 <TextBlock Text="{Binding Detalle.Producto.Nombre}"
                                                            Width="150"/>
                                                 <TextBlock Text="{Binding Detalle.Cantidad}"

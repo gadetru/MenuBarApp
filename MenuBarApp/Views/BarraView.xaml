@@ -6,11 +6,108 @@
              xmlns:local="clr-namespace:MenuBarApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-        <TextBlock Text="PANTALLA Barra y caja"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- CABECERA -->
+        <TextBlock Grid.Row="0"
+                   Text="Barra y caja"
+                   FontSize="24"
+                   FontWeight="Bold"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="30"/>
-    
+                   Margin="0,10,0,10"/>
+
+        <!-- LISTA DE PEDIDOS -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Pedidos}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <!-- TARJETA DE CADA PEDIDO -->
+                        <Border BorderThickness="1"
+                                CornerRadius="5"
+                                Margin="10"
+                                Padding="10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="Gray"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Estado}" Value="Proceso">
+                                            <Setter Property="Background" Value="#FFE0B2"/>
+                                            <Setter Property="BorderBrush" Value="#FF9800"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Estado}" Value="Completado">
+                                            <Setter Property="Background" Value="#C8E6C9"/>
+                                            <Setter Property="BorderBrush" Value="#4CAF50"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- NOMBRE DEL CLIENTE, HORA Y ESTADO -->
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pedido.NombreCliente}"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Pedido.FechaHora, StringFormat='{}{0:HH:mm}'}"
+                                               FontSize="14"
+                                               Foreground="Gray"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Estado}"
+                                               FontSize="14"
+                                               FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <!-- PRODUCTOS DEL PEDIDO -->
+                                <ItemsControl Grid.Row="1"
+                                              ItemsSource="{Binding Pedido.Detalles}"
+                                              Margin="0,0,0,8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Margin="0,2,0,2">
+                                                <TextBlock Text="{Binding Producto.Nombre}"
+                                                           Width="150"/>
+                                                <TextBlock Text="{Binding Cantidad}"
+                                                           Margin="8,0,0,0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- BOTÓN ARCHIVAR -->
+                                <StackPanel Grid.Row="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right">
+                                    <Button Content="Cobrado y entregado"
+                                            Command="{Binding DataContext.ArchivarPedidoCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Width="150"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
     </Grid>
 </UserControl>

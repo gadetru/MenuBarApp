@@ -66,9 +66,9 @@ namespace MenuBarApp.ViewModels
             _pedidoService = new PedidoService();
 
             ConfirmarPedidoCommand = new RelayCommand(
-                execute: _ => ConfirmarPedido(),
-                canExecute: _ => PuedeConfirmar
-                );
+                execute: delegate (object parametro) { ConfirmarPedido(); },
+                canExecute: delegate (object parametro) { return PuedeConfirmar; }
+            );
             Carrito.CollectionChanged += (_, _) =>
             {
                 OnPropertyChanged(nameof(PuedeConfirmar));

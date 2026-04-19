@@ -62,7 +62,11 @@ namespace MenuBarApp.ViewModels
 
             foreach (Pedido pedido in lista)
             {
-                _pedidos.Add(new PedidoItemViewModel(pedido));
+                _pedidos.Add(new PedidoItemViewModel(pedido, delegate () // está chulo delegate,me sirve pa pasar una funcion entera en lugar de un parámetro.
+                {
+
+                    (PedidoCompletadoCommand as RelayCommand).RaiseCanExecuteChanged();
+                } ));
             }
         }
 
@@ -78,8 +82,9 @@ namespace MenuBarApp.ViewModels
                 Enums.EstadoPedido.Proceso
             );
 
+            pedidoItem.Estado = Enums.EstadoPedido.Proceso; // aquí actualizo el estado del pedido sin recargar toda la vista, no se pierden los checks :)
             // Recargamos la lista para reflejar el cambio
-            CargarPedidos();
+            //CargarPedidos(); // quedas fuera porque sino, me recargas la vista del pedido entera y pierdo los datos de los checks.
         }
 
         // Se ejecuta cuando pulsan "Completado"
